@@ -20,6 +20,8 @@ namespace Maes.Trackers
         public float TotalDistanceTraveled { get; private set; } = 0;
         public float CurrentGraphIdleness { get; private set; } = 0;
         public float AverageGraphIdleness => GraphIdlenessList.Count != 0 ? GraphIdlenessList.Average() : 0;
+        public int CompletedCycles { get; private set; } = 0;
+        public float? AverageGraphDiffLastTwoCyclesProportion => GraphIdlenessList.Count >= 2 ? Mathf.Abs(GraphIdlenessList[^1] - GraphIdlenessList[^2]) / GraphIdlenessList[^2] : null;
 
         private List<float> GraphIdlenessList { get; } = new();
         
@@ -42,6 +44,7 @@ namespace Maes.Trackers
             vertexDetails.VisitedAtTick(atTick);
                 
             WorstGraphIdleness = Mathf.Max(WorstGraphIdleness, vertexDetails.MaxIdleness);
+            SetCompletedCycles();
         }
         
         public void LogicUpdate(IReadOnlyList<MonaRobot> robots)
@@ -75,6 +78,11 @@ namespace Maes.Trackers
         {
             var currentTick = PatrollingSimulation.SimulatedLogicTicks;
             return Vertices.Values.Select(vertex => currentTick - vertex.LastTimeVisitedTick).ToArray();
+        }
+        
+        private void SetCompletedCycles()
+        {
+            CompletedCycles = Vertices.Values.Select(v => v.NumberOfVisits).Min();
         }
     }
 }
