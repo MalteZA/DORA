@@ -5,12 +5,16 @@ using MAES.Simulation.SimulationScenarios;
 
 using TMPro;
 
+using UnityEngine;
 using UnityEngine.UI;
+
+using XCharts.Runtime;
 
 namespace MAES.UI.SimulationInfoUIControllers
 {
     public sealed class PatrollingInfoUIController : SimulationInfoUIControllerBase<PatrollingSimulation, IPatrollingAlgorithm, PatrollingSimulationScenario>
     {
+        public ScatterChart Chart;
         public Image ProgressBarMask;
         public TextMeshProUGUI ProgressText;
 
@@ -22,13 +26,17 @@ namespace MAES.UI.SimulationInfoUIControllers
         public TextMeshProUGUI AverageGraphIdlenessText;
         
         public Button WaypointHeatMapButton;
+        public Button ToogleIdleGraphButton;
         
         protected override void AfterStart()
         {
+            InitIdleGraph();
             StoppingCriteriaToggle.onValueChanged.AddListener(delegate {
                 //TODO: when the stopping criteria is toggled
             });
-
+            
+            ToogleIdleGraphButton.onClick.AddListener(() => ToogleGraph());
+            
             WaypointHeatMapButton.onClick.AddListener(() => {
                 ExecuteAndRememberMapVisualizationModification(sim => {
                     if (sim != null) {
@@ -71,6 +79,26 @@ namespace MAES.UI.SimulationInfoUIControllers
         private void SetAverageGraphIdleness(float idleness) => 
             AverageGraphIdlenessText.text = $"Average graph idleness: {idleness} ticks";
 
+        private void ToogleGraph()
+        {
+            Chart.gameObject.SetActive(!Chart.gameObject.activeSelf);
+        }
         
+        private void InitIdleGraph()
+        {
+            Chart.Init();
+            var xAxis = Chart.EnsureChartComponent<XAxis>();
+            xAxis.splitNumber = 10;
+            xAxis.boundaryGap = true;
+            xAxis.type =  Axis.AxisType.Category;
+
+            var yAxis = Chart.EnsureChartComponent<YAxis>();
+            yAxis.type =  Axis.AxisType.Value;
+            Chart.RemoveData();
+            var series = Chart.AddSerie<Scatter>("scatter");
+            series.symbol.size = 4;
+            
+            Simulation!.PatrollingTracker.Chart = Chart;
+        }
     }
 }

@@ -10,6 +10,8 @@ using MAES.Trackers;
 
 using UnityEngine;
 
+using XCharts.Runtime;
+
 namespace Maes.Trackers
 {
     // TODO: Change Tile to another type, Implemented in the next PR
@@ -18,6 +20,7 @@ namespace Maes.Trackers
         private PatrollingSimulation PatrollingSimulation { get; }
         private PatrollingMap Map { get;}
         private Dictionary<Vector2Int, VertexDetails> Vertices { get; }
+        private int PlottedCycles = 0;
 
         public int WorstGraphIdleness { get; private set; }
         // TODO: TotalDistanceTraveled is not set any where in the code, don't know how to calculate it yet
@@ -27,6 +30,8 @@ namespace Maes.Trackers
         public int CompletedCycles { get; private set; } = 0;
         public float? AverageGraphDiffLastTwoCyclesProportion => GraphIdlenessList.Count >= 2 ? Mathf.Abs(GraphIdlenessList[^1] - GraphIdlenessList[^2]) / GraphIdlenessList[^2] : null;
 
+        public ScatterChart Chart { get; set; }
+        
         private List<float> GraphIdlenessList { get; } = new();
         //TODO: TotalCycles is not set any where in the code
         public int TotalCycles { get; set; } = 10;
@@ -60,7 +65,14 @@ namespace Maes.Trackers
             WorstGraphIdleness = Mathf.Max(WorstGraphIdleness, eachVertexIdleness.Max());
             CurrentGraphIdleness = eachVertexIdleness.Average(n => (float)n);
             GraphIdlenessList.Add(CurrentGraphIdleness);
-            
+            // Example: How to plot the data
+            // TODO: Plot the correct data.
+            if (_currentTick % 100 == 0)
+            {
+                PlottedCycles++;
+                Chart.AddXAxisData("" + _currentTick);
+                Chart.AddData(0, CurrentGraphIdleness);
+            }
             // TODO: Remove this when the code UI is set up, just for showing that it works
             Debug.Log($"Worst graph idleness: {WorstGraphIdleness}, Current graph idleness: {CurrentGraphIdleness}, Average graph idleness: {AverageGraphIdleness}");
         }

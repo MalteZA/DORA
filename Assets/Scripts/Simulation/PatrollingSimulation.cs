@@ -12,6 +12,8 @@ using Maes.Statistics;
 using Maes.Trackers;
 using MAES.UI.SimulationInfoUIControllers;
 
+using XCharts.Runtime;
+
 namespace Maes
 {
     public sealed class PatrollingSimulation : SimulationBase<PatrollingSimulation, PatrollingVisualizer, PatrollingCell, PatrollingTracker, PatrollingInfoUIController, IPatrollingAlgorithm, PatrollingSimulationScenario, PatrollingRobotSpawner>
@@ -19,7 +21,7 @@ namespace Maes
         public PatrollingVisualizer patrollingVisualizer;
 
         public PatrollingTracker PatrollingTracker;
-
+        
         public override PatrollingVisualizer Visualizer => patrollingVisualizer;
 
         public override PatrollingTracker Tracker => PatrollingTracker;

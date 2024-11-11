@@ -5,7 +5,8 @@
   "unity": "2021.3",
   "dependencies": {
     "com.unity.robotics.ros-tcp-connector": "git+https://github.com/Unity-Technologies/ROS-TCP-Connector.git?path=/com.unity.robotics.ros-tcp-connector#v0.7.1",
-    "com.chrisnolet.quickoutline": "git+https://github.com/cs-24-sw-9-xx/QuickOutline.git"
+    "com.chrisnolet.quickoutline": "git+https://github.com/cs-24-sw-9-xx/QuickOutline.git",
+    "com.monitor1394.xcharts": "git+https://github.com/XCharts-Team/XCharts.git#v3.12.0"
   },
   "keywords": [
     "simulator",

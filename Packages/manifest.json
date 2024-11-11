@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.chrisnolet.quickoutline": "git+https://github.com/cs-24-sw-9-xx/QuickOutline.git",
+    "com.monitor1394.xcharts": "git+https://github.com/XCharts-Team/XCharts.git#v3.12.0",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ai.navigation": "1.1.5",

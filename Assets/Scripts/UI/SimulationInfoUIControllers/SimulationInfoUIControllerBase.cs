@@ -69,7 +69,7 @@ namespace MAES.UI.SimulationInfoUIControllers {
 
         private void Start()
         {
-            // Set listeners for Tag visualization buttons 
+            /*// Set listeners for Tag visualization buttons 
             AllVisualizeTagsButton.onClick.AddListener(() => {
                 ExecuteAndRememberTagVisualization(sim => {
                     if (sim != null) {
@@ -86,7 +86,7 @@ namespace MAES.UI.SimulationInfoUIControllers {
                         }
                     }
                 });
-            });
+            });*/
             
             StickyCameraButton.onClick.AddListener(() => {
                 CameraController.singletonInstance.stickyCam = !CameraController.singletonInstance.stickyCam;
