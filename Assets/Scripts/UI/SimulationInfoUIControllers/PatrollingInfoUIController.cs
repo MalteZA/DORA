@@ -35,10 +35,14 @@ namespace Maes.UI.SimulationInfoUIControllers
                 WaypointHeatMapButton, CoverageHeatMapButton, PatrollingHeatMapButton
             };
             SelectVisualizationButton(WaypointHeatMapButton);
+
+            if (Simulation != null)
+                StoppingCriteriaToggle.isOn = Simulation.PatrollingTracker.StopAfterDiff;
             
-            
-            StoppingCriteriaToggle.onValueChanged.AddListener(delegate {
-                //TODO: when the stopping criteria is toggled
+            StoppingCriteriaToggle.onValueChanged.AddListener(toggleValue =>
+            {
+                if (Simulation != null)
+                    Simulation.PatrollingTracker.StopAfterDiff = toggleValue;
             });
 
             WaypointHeatMapButton.onClick.AddListener(() => {

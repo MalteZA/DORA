@@ -8,6 +8,7 @@ using Maes.Map.Visualization.Patrolling;
 
 using Maes.Robot;
 using Maes.Simulation;
+using Maes.Simulation.SimulationScenarios;
 using Maes.Statistics;
 
 using UnityEngine;
@@ -31,14 +32,17 @@ namespace Maes.Trackers
 
         private List<float> GraphIdlenessList { get; } = new();
         //TODO: TotalCycles is not set any where in the code
-        public int TotalCycles { get; set; } = 10;
+        public int TotalCycles { get; }
+        public bool StopAfterDiff { get; set; } 
 
-        public PatrollingTracker(SimulationMap<Tile> collisionMap, PatrollingVisualizer visualizer, PatrollingSimulation patrollingSimulation, RobotConstraints constraints,
-            PatrollingMap map) : base(collisionMap, visualizer, constraints, tile => new PatrollingCell(isExplorable: !Tile.IsWall(tile.Type)))
+        public PatrollingTracker(SimulationMap<Tile> collisionMap, PatrollingVisualizer visualizer, PatrollingSimulation patrollingSimulation, PatrollingSimulationScenario scenario,
+            PatrollingMap map) : base(collisionMap, visualizer, scenario.RobotConstraints, tile => new PatrollingCell(isExplorable: !Tile.IsWall(tile.Type)))
         {
             PatrollingSimulation = patrollingSimulation;
             Map = map;
             Vertices = map.Vertices.ToDictionary(vertex => vertex.Position, vertex => new VertexDetails(vertex));
+            TotalCycles = scenario.TotalCycles;
+            StopAfterDiff = scenario.StopAfterDiff;
             
             _visualizer.meshRenderer.enabled = false;
             _currentVisualizationMode = new WaypointHeatMapVisualizationMode();

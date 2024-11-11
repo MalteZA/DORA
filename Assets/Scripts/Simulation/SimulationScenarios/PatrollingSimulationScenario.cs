@@ -14,10 +14,13 @@ namespace Maes.Simulation.SimulationScenarios
     public sealed class PatrollingSimulationScenario : SimulationScenario<PatrollingSimulation, IPatrollingAlgorithm>
     {
         public PatrollingMapFactory PatrollingMapFactory { get; }
-        
+        public int TotalCycles { get; }
+        public bool StopAfterDiff { get; }
+
         public PatrollingSimulationScenario(
             int seed,
-            SimulationEndCriteriaDelegate<PatrollingSimulation>? hasFinishedSim=null,
+            int totalCycles,
+            bool stopAfterDiff,
             MapFactory? mapSpawner=null,
             RobotFactory<IPatrollingAlgorithm>? robotSpawner=null,
             RobotConstraints? robotConstraints=null,
@@ -26,11 +29,13 @@ namespace Maes.Simulation.SimulationScenarios
             ) 
             : base(seed,
                 robotSpawner ?? ((map, spawner) => spawner.SpawnRobotsTogether(map, seed, 1, Vector2Int.zero, _ => new ConscientiousReactiveAlgorithm())),
-                hasFinishedSim, 
+                null,
                 mapSpawner,
                 robotConstraints,
                 statisticsFileName)
         {
+            TotalCycles = totalCycles;
+            StopAfterDiff = stopAfterDiff;
             PatrollingMapFactory = patrollingMapFactory ?? ((generator, map) => generator.GeneratePatrollingMapRectangleBased(map));
         }
     }

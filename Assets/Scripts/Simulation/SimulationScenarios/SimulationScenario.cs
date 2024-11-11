@@ -64,7 +64,7 @@ namespace Maes.Simulation.SimulationScenarios
             )
         {
             Seed = seed;
-            HasFinishedSim = hasFinishedSim ?? (simulation => simulation.HasFinishedSim() || simulation.SimulatedLogicTicks > 3600 * 10);
+            HasFinishedSim = hasFinishedSim ?? (simulation => simulation.HasFinishedSim());
             // Default to generating a cave map when no map generator is specified
             MapSpawner = mapSpawner ?? (generator => generator.GenerateMap(new CaveMapConfig(seed)));
             RobotSpawner = robotSpawner;

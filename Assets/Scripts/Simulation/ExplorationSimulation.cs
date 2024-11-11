@@ -25,7 +25,7 @@ namespace Maes.Simulation
 
         public override bool HasFinishedSim()
         {
-            return ExplorationTracker.ExploredProportion > 0.99f;
+            return ExplorationTracker.ExploredProportion > 0.99f || SimulatedLogicTicks > 3600 * 10;
         }
 
         public override void OnSimulationFinished()
